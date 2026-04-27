@@ -85,14 +85,12 @@
                 symbolSize: 12,
                 symbol: 'circle',
                 lineStyle: { width: 5 },
-                // Area di bawah garis untuk estetika modern
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: 'rgba(0,0,0,0.1)' },
                         { offset: 1, color: 'rgba(0,0,0,0)' }
                     ])
                 },
-                // Menandai titik di bawah nol
                 markLine: {
                     silent: true,
                     lineStyle: { color: '#ff0000', type: 'solid', width: 1 },
@@ -102,8 +100,6 @@
         };
 
         myChart.setOption(option);
-
-        // Membuat grafik responsif saat layar HP dibuka
         window.addEventListener('resize', function() {
             myChart.resize();
         });
