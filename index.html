@@ -1,40 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Visualisasi Ekonomi B50</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Makro Ekonomi B50</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
-        body { background-color: #ffffff; font-family: sans-serif; margin: 0; padding: 20px; }
-        #main { width: 100%; height: 500px; max-width: 800px; margin: auto; }
+        body { 
+            background-color: #ffffff; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 40px 20px;
+            color: #000000;
+        }
+        #main { 
+            width: 100%; 
+            height: 500px; 
+            max-width: 900px; 
+            margin: auto; 
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            border-top: 2px solid #000;
+            padding-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div id="main"></div>
+    <div class="container">
+        <div id="main"></div>
+    </div>
+
     <script type="text/javascript">
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
         var option;
 
         option = {
-            title: { text: 'Simulasi Dampak Ekonomi B50', subtext: 'Sumber: Analisis CGE', left: 'center' },
-            tooltip: { trigger: 'axis' },
-            // Desain minimalis tanpa garis sampah
-            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-            xAxis: { type: 'category', data: ['2024', '2025', '2026', '2027'], axisLine: { show: false } },
-            yAxis: { type: 'value', splitLine: { lineStyle: { type: 'dashed' } } },
+            title: { 
+                text: 'Dampak B50 terhadap PDB Riil (%)', 
+                subtext: 'Simulasi Computable General Equilibrium (CGE)',
+                left: 'left',
+                textStyle: { fontSize: 22, fontWeight: 'bold' }
+            },
+            tooltip: { 
+                trigger: 'axis',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                borderWidth: 1,
+                borderColor: '#000',
+                textStyle: { color: '#000' },
+                formatter: function (params) {
+                    return '<b>Tahun ' + params[0].name + '</b><br/>Dampak PDB: ' + params[0].value + '%';
+                }
+            },
+            grid: { 
+                left: '5%', 
+                right: '5%', 
+                bottom: '10%', 
+                top: '20%',
+                containLabel: true 
+            },
+            xAxis: { 
+                type: 'category', 
+                data: ['2024', '2025', '2026', '2027'], 
+                axisLine: { lineStyle: { color: '#000', width: 2 } },
+                axisTick: { show: false },
+                boundaryGap: true
+            },
+            yAxis: { 
+                type: 'value', 
+                name: 'Persentase (%)',
+                nameTextStyle: { fontWeight: 'bold', padding: [0, 0, 10, 0] },
+                splitLine: { lineStyle: { type: 'dashed', color: '#ccc' } },
+                axisLabel: { formatter: '{value}%' },
+                axisLine: { show: false }
+            },
             series: [{
-                name: 'PDB Riil (%)',
+                name: 'Dampak PDB Riil',
                 data: [0.15, 0.12, 0.05, -0.05],
                 type: 'line',
                 smooth: true,
-                color: '#000000', // Hitam murni agar terlihat profesional
-                symbolSize: 10,
-                lineStyle: { width: 4 }
+                color: '#000000', 
+                symbolSize: 12,
+                symbol: 'circle',
+                lineStyle: { width: 5 },
+                // Area di bawah garis untuk estetika modern
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(0,0,0,0.1)' },
+                        { offset: 1, color: 'rgba(0,0,0,0)' }
+                    ])
+                },
+                // Menandai titik di bawah nol
+                markLine: {
+                    silent: true,
+                    lineStyle: { color: '#ff0000', type: 'solid', width: 1 },
+                    data: [{ yAxis: 0 }]
+                }
             }]
         };
 
         myChart.setOption(option);
+
+        // Membuat grafik responsif saat layar HP dibuka
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
     </script>
 </body>
 </html>
